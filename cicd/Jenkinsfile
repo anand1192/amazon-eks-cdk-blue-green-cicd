@@ -8,7 +8,7 @@ pipeline {
         withCredentials([[ $class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'ff6256b4-2227-4dc6-adba-0b65bae63f6e', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
           sh '''
           echo "Setting Environment Variables Stage"
-          export AWS_REGION=${JENKINS_AWS_REGION}
+          export AWS_REGION=us-east-1
           aws configure set region ${AWS_REGION}
           export ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
           ecrRepo=$(aws cloudformation --region ${AWS_REGION} describe-stack-resources --stack-name CdkStackALBEksBg | jq \'.StackResources[]|select(.ResourceType == "AWS::ECR::Repository").PhysicalResourceId\' | tr -d \'"\')
